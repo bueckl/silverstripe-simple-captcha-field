@@ -40,6 +40,8 @@ class SimpleCaptchaController extends Controller
     public function image()
     {
         $this->getResponse()->addHeader("Cache-control", "no-cache");
+        $this->getResponse()->addHeader("Content-type", "image/pdf");
+
         $str = self::getCaptchaID();
         // Create an image from button.png
         $image = imagecreatefrompng(SIMPLE_FORM_CAPTCHA_PATH . '/images/button.png');
@@ -48,10 +50,13 @@ class SimpleCaptchaController extends Controller
         // Set the font
         $font = SIMPLE_FORM_CAPTCHA_PATH . '/font/anorexia.ttf';
         // Set a random integer for the rotation between -15 and 15 degrees
-        $rotate = rand(-1, 10);
+        // $rotate = rand(-1, 10);
+        $rotate = rand(0, 0);
         // Create an image using our original image and adding the detail
         imagettftext($image, 20, $rotate, 18, 30, $colour, $font, $str);
         // Output the image as a png
+
+
         return imagepng($image);
 
     }
@@ -66,7 +71,7 @@ class SimpleCaptchaController extends Controller
         // '0' is left out to avoid confusion with 'O'
         $str = rand(1, 7) . rand(1, 7) . $char;
         // Set the session contents
-        Session::set("simple_captcha_id", $str);
+        Session::set("captchaId", $str);
     }
 
     /**
@@ -74,7 +79,7 @@ class SimpleCaptchaController extends Controller
      */
     public static function getCaptchaID()
     {
-        return Session::get("simple_captcha_id");
+        return Session::get("captchaId");
     }
 
 
