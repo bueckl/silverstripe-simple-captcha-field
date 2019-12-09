@@ -40,7 +40,7 @@ class SimpleCaptchaController extends Controller
     public function image()
     {
         $this->getResponse()->addHeader("Cache-control", "no-cache");
-        $this->getResponse()->addHeader("Content-type", "image/pdf");
+        $this->getResponse()->addHeader("Content-type", "image/png");
 
         $str = self::getCaptchaID();
         // Create an image from button.png
