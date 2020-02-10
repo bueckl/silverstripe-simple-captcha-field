@@ -21,8 +21,10 @@ var SimpleCaptchaField = function () {
     return {
         validate: function () {
 
+            if ( SIMPLECAPTCHAFORM.length ) {
 
-            $("form." + SIMPLECAPTCHAFORM + " input[type='submit']").on('click', function (e) {
+
+                $("form." + SIMPLECAPTCHAFORM + " input[type='submit']").on('click', function (e) {
                 e.preventDefault();
 
                 var Captcha = $("input.SimpleCaptchaField").val();
@@ -48,6 +50,9 @@ var SimpleCaptchaField = function () {
                 });
 
             });
+
+                
+            }            
 
         }
     }
