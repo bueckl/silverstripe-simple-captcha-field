@@ -53,7 +53,7 @@ class SimpleCaptchaController extends Controller
         // $rotate = rand(-1, 10);
         $rotate = rand(0, 0);
         // Create an image using our original image and adding the detail
-        imagettftext($image, 20, $rotate, 18, 30, $colour, $font, $str);
+        imagettftext($image, 18, $rotate, 18, 30, $colour, $font, $str);
         // Output the image as a png
 
 
