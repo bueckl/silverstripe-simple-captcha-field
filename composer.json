@@ -1,7 +1,7 @@
 {
   "name": "chitosystems/silverstripe-simple-captcha-field",
   "description": "Silverstripe spam captcha field",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "keywords": [
     "silverstripe",
     "bootstrap",
@@ -16,10 +16,15 @@
     }
   ],
   "require": {
-    "silverstripe/framework": "3.*",
-    "silverstripe/cms": "3.*"
+    "silverstripe/framework" : "~4.0"
   },
   "extra": {
-    "installer-name": "simple-captcha-field"
+    "installer-name": "simple-captcha-field",
+    "expose": [
+      "css",
+      "font",
+      "images",
+      "js"
+    ]
   }
 }

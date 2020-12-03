@@ -2,6 +2,6 @@
 Name: chitoroutes
 After: framework/routes#coreroutes
 ---
-Director:
+SilverStripe\Control\Director:
   rules:
-    'simple-validation//$Action/$ID/$OtherID': 'SimpleCaptchaController'
+    'simple-validation//$Action/$ID/$OtherID': 'SilverstripeSimpleCaptcha\SimpleCaptchaController'

@@ -6,6 +6,13 @@
  * @package form
  * @subpackage validation
  */
+
+namespace SilverstripeSimpleCaptcha;
+
+use SilverStripe\Control\Session;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\View\Requirements;
+
 class SimpleCaptchaField extends TextField
 {
 
@@ -65,7 +72,7 @@ class SimpleCaptchaField extends TextField
                 "validation"
             );
 
-            Session::set("SimpleCaptchaError", $errormsg);
+            $this->session()::set("SimpleCaptchaError", $errormsg);
             return false;
 
         }
@@ -81,5 +88,9 @@ class SimpleCaptchaField extends TextField
     public function getValidateOnSubmit()
     {
         return $this->validateOnSubmit;
+    }
+    
+    public function session() {
+        return Injector::inst()->get(Session::class);
     }
 }

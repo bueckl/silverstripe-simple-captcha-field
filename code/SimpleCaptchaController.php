@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class SimpleCaptchaController
  *
@@ -8,6 +7,14 @@
  * @package form
  * @subpackage validation
  */
+
+namespace SilverstripeSimpleCaptcha;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\Session;
+use SilverStripe\Core\Convert;
+use SilverStripe\Core\Injector\Injector;
+
 class SimpleCaptchaController extends Controller
 {
     private static $allowed_actions = array(
@@ -66,7 +73,7 @@ class SimpleCaptchaController extends Controller
         // '0' is left out to avoid confusion with 'O'
         $str = rand(1, 7) . rand(1, 7) . $char;
         // Set the session contents
-        Session::set("simple_captcha_id", $str);
+        $thi->session()::set("simple_captcha_id", $str);
     }
 
     /**
@@ -74,8 +81,11 @@ class SimpleCaptchaController extends Controller
      */
     public static function getCaptchaID()
     {
-        return Session::get("simple_captcha_id");
+        return $thi->session()::get("simple_captcha_id");
     }
 
+    public function session() {
+        return Injector::inst()->get(Session::class);
+    }
 
 }
