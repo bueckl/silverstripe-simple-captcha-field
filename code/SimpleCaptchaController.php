@@ -11,6 +11,7 @@
 namespace SilverstripeSimpleCaptcha;
 
 use SilverStripe\Control\Controller;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Session;
 use SilverStripe\Core\Convert;
 use SilverStripe\Core\Injector\Injector;
@@ -31,10 +32,10 @@ class SimpleCaptchaController extends Controller
     /**
      * @return bool
      */
-    function validate()
+    public function validate()
     {
         $captcha = Convert::raw2sql($this->urlParams['ID']);
-        if (strtoupper($captcha) === self::getCaptchaID()) {
+        if (strtoupper($captcha) === $this->getCaptchaID()) {
             return 'valid';
         }
 
@@ -47,9 +48,10 @@ class SimpleCaptchaController extends Controller
     public function image()
     {
         $this->getResponse()->addHeader("Cache-control", "no-cache");
-        $str = self::getCaptchaID();
+        $str = $this->getCaptchaID();
         // Create an image from button.png
         $image = imagecreatefrompng(SIMPLE_FORM_CAPTCHA_PATH . '/images/button.png');
+
         // Set the font colour
         $colour = imagecolorallocate($image, 183, 178, 152);
         // Set the font
@@ -63,7 +65,7 @@ class SimpleCaptchaController extends Controller
 
     }
 
-    public static function generateCaptchaID()
+    public function generateCaptchaID()
     {
         // debug::show($time_stamp);
         // Create a random string, leaving out 'o' to avoid confusion with '0'
@@ -73,19 +75,27 @@ class SimpleCaptchaController extends Controller
         // '0' is left out to avoid confusion with 'O'
         $str = rand(1, 7) . rand(1, 7) . $char;
         // Set the session contents
-        $thi->session()::set("simple_captcha_id", $str);
+
+        if($this->getRequest()->hasSession()) {
+            $this->getRequest()->getSession()->set("simple_captcha_id", $str);
+        } else {
+            $this->session()->set("simple_captcha_id", $str);
+        }
+
     }
 
     /**
      * @return array|null|Session
      */
-    public static function getCaptchaID()
+    public function getCaptchaID()
     {
-        return $thi->session()::get("simple_captcha_id");
+        return $this->session()->get("simple_captcha_id");
     }
 
-    public function session() {
-        return Injector::inst()->get(Session::class);
+    public function session()
+    {
+        $request = Injector::inst()->get(HTTPRequest::class);
+        return $request->getSession();
     }
 
 }

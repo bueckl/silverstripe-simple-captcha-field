@@ -11,6 +11,7 @@ namespace SilverstripeSimpleCaptcha;
 
 use SilverStripe\Control\Session;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Forms\TextField;
 use SilverStripe\View\Requirements;
 
 class SimpleCaptchaField extends TextField
@@ -26,8 +27,8 @@ class SimpleCaptchaField extends TextField
      */
     public function __construct($name, $title = null, $form)
     {
-        Requirements::css(SIMPLE_FORM_CAPTCHA_DIR . '/css/form.css');
-        Requirements::javascript(SIMPLE_FORM_CAPTCHA_DIR . '/js/SimpleCaptchaField.js');
+        Requirements::css( 'chitosystems/silverstripe-simple-captcha-field:/css/form.css');
+        Requirements::javascript('chitosystems/silverstripe-simple-captcha-field:/js/SimpleCaptchaField.js');
 
         parent::__construct($name, $title, null, null, $form);
 
@@ -41,14 +42,14 @@ class SimpleCaptchaField extends TextField
     /**
      * @return string
      */
-    function getSkyImageLink()
+    public function getSkyImageLink()
     {
         $controller = SimpleCaptchaController::create();
         $controller->generateCaptchaID();
         return $controller->Link() . "image/?" . time();
     }
 
-    protected $extraClasses = array('SimpleCaptchaField', 'form-control', 'field', 'text');
+    protected $extraClasses = array('SimpleCaptchaField', 'text');
 
     /**
      * Validate this field
@@ -63,7 +64,8 @@ class SimpleCaptchaField extends TextField
             return true;
         } else {
 
-            if (strtoupper($this->value) === SimpleCaptchaController::getCaptchaID()) {
+            $simpleCaptcha = Injector::inst()->get(SimpleCaptchaController::class);
+            if (strtoupper($this->value) === $simpleCaptcha->getCaptchaID()) {
                 return true;
             }
             $errormsg = sprintf("%s is wrong, Correct captcha is required", $this->value);
@@ -72,7 +74,7 @@ class SimpleCaptchaField extends TextField
                 "validation"
             );
 
-            $this->session()::set("SimpleCaptchaError", $errormsg);
+            $this->session()->set("SimpleCaptchaError", $errormsg);
             return false;
 
         }
@@ -89,7 +91,7 @@ class SimpleCaptchaField extends TextField
     {
         return $this->validateOnSubmit;
     }
-    
+
     public function session() {
         return Injector::inst()->get(Session::class);
     }
