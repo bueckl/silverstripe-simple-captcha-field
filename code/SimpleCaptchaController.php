@@ -46,12 +46,12 @@ class SimpleCaptchaController extends Controller
         // Create an image from button.png
         $image = imagecreatefrompng(SIMPLE_FORM_CAPTCHA_PATH . '/images/button.png');
         // Set the font colour
-        $colour = imagecolorallocate($image, 183, 178, 152);
+        $colour = imagecolorallocate($image, 152, 152, 152);
         // Set the font
         $font = SIMPLE_FORM_CAPTCHA_PATH . '/font/anorexia.ttf';
         // Set a random integer for the rotation between -15 and 15 degrees
-        // $rotate = rand(-1, 10);
-        $rotate = rand(0, 0);
+        $rotate = rand(-1, 10);
+        //$rotate = rand(0, 0);
         // Create an image using our original image and adding the detail
         imagettftext($image, 18, $rotate, 18, 30, $colour, $font, $str);
         // Output the image as a png
